@@ -2,6 +2,7 @@
 This is the main code to run NNSC from the input specifications.
 """
 
+import os
 import sys
 import numpy as np
 import scipy.io as sio
@@ -139,6 +140,9 @@ if params['make_plots']:
 
 #PLOTTING bias vs properties
 varnames_1d, vars1dwithdisk, vars1dwithoutdisk, varnames, var2names, vars2dowithdisk, vars2dowithoutdisk = ut.get_varnames_to_plot(params['selection'])
+
+if not params['save']:
+    os.remove(output_path + fname + '.mat')
 
 #Plotting 1d dependencies
 for i in range(len(varnames_1d)):
