@@ -1,0 +1,14 @@
+*.pyc
+*.sh
+*.txt
+*.npz
+*.out
+*.pdf
+*.ps
+*.png
+*.py~
+*.swp
+*.sw?
+*.html
+*.cat
+
