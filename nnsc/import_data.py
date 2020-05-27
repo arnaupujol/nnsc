@@ -32,21 +32,21 @@ def get_input_data(extra_filter = None, selection = 'original', path = '', name 
     KSB_props: list with property names
     """
     if selection == 'original':
-        list_elements = range(29)
+        list_elements = range(27)
     elif selection == 'qbeta':
-        list_elements = [19, 20, 25, 26]
+        list_elements = [17, 18, 23, 24]
     elif selection == 'ellip':
-        list_elements = [0, 1, 19, 20, 21, 22, 25, 26]
+        list_elements = [0, 1, 17, 18, 19, 20, 23, 24]
     elif selection == 'reduced':
-        list_elements = [0, 1, 2, 12, 13, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+        list_elements = [0, 1, 2, 10, 11, 16, 17, 18, 19, 20, 21, 22, 23, 24]
     elif selection == 'sel8':
-        list_elements = [0, 1, 2, 21, 22, 24, 25, 26]
+        list_elements = [0, 1, 2, 19, 20, 22, 23, 24]
     else:
         print("ERROR: invalid value of selection: " + selection)
     X = np.load(path + name)
     X = np.array([X[:,i] for i in list_elements])
-    input_props = [['gFIT_final_e1', 'gFIT_final_e2', 'gFIT_out_flux', 'gFIT_out_e1', \
-    'gFIT_out_e2', 'gFIT_out_gal_sigma_noise', 'gFIT_out_dre', 'gFIT_out_bre', 'gFIT_out_df', \
+    input_props = [['gFIT_final_e1', 'gFIT_final_e2', 'gFIT_out_flux', \
+    'gFIT_out_gal_sigma_noise', 'gFIT_out_dre', 'gFIT_out_bre', 'gFIT_out_df', \
     'gFIT_out_nb_fev', 'gFIT_SE_GAL_FLUX', 'gFIT_SE_GAL_FLUX_RADIUS', 'gFIT_SE_GAL_SNR', \
     'gFIT_SE_GAL_MAG', 'gFIT_SE_PSF_FLUX', 'gFIT_SE_PSF_FLUX_RADIUS', 'gFIT_SE_PSF_SNR', \
     'gFIT_SE_PSF_MAG', 'gFIT_SE_PSF_FWHM_IMAGE', 'gFIT_out_beta', 'gFIT_out_q', 'KSB_final_e1', \
