@@ -10,13 +10,44 @@ import scipy.io as sio
 from copy import deepcopy as dp
 
 def leaky_relu(z, name=None):
+  """
+  It operates a Leaky ReLU on the value z.
+  Input:
+  z: value to which we operate.
+  name: a name for the operation (optional).
+  Output:
+  Result of Leaky ReLU operation.
+  """
   return tf.maximum(0.01 * z, z, name=name)
 
 def np_leaky_relu(z):
+  """
+  Numpy version of Leaky ReLU.
+  Input:
+  z: value to which we operate.
+  Output:
+  Result of Leaky ReLU operation.
+  """
   return np.maximum(0.01 * z, z)
 
 def deep_reg(dimensions=[784, 512, 256, 64],ct=[0.1,0.1,0.1,0.1], activation = 'leaky_relu'):
+    """
+    It builds the architecture corresponding to a NN regression.
+    Input:
+    dimensions: List of number of neurons per layer.
+    ct: list of values of the contamination level applied to the NN per layer.
+    activation: it defines the activation functions applied. Options can be:
+    'leaky_relu', 'relu_tanh', 'leaky_relu_l', 'tanh', 'relu_tanh'.
 
+    Output:
+    Dictionary with:
+    x: input training data.
+    theta: labels for supervised learning.
+    z: NN output.
+    W: weights of NN.
+    b: bias.
+    cost: value of cost function.
+    """
     L = len(dimensions) -1
 
     # INPUT DATA
@@ -71,6 +102,26 @@ def deep_reg(dimensions=[784, 512, 256, 64],ct=[0.1,0.1,0.1,0.1], activation = '
     return {'x': x,'theta':theta, 'z': z_out,'W':encoder,'b':b_enc,'cost':cost}
 
 def main_reg(Ytrain, Theta, dim = [30, 30, 30], ct = [.1, .1, .1], n_epochs = 100, batch_size=25,starter_learning_rate=1e-4,fname='deep_reg', optim = 'Adam', decay_after = 15, activation = 'leaky_relu', Ytest = None, Ttest = None):
+    """
+    Main function to train the neural network.
+    Input:
+    Ytrain: input training data
+    Theta: label data for supervised learning
+    dim: list of number of neurons per layer.
+    ct: list of values of the contamination level applied to the NN per layer.
+    n_epochs: number of epochs applied on the training.
+    batch_size: batch size
+    starter_learning_rate: initial learning rate.
+    fname: name of the model.
+    optim: optimizer. It can be 'Adam' or 'GD'.
+    decay_after: how many epochs to wait until decay learning rate is applied.
+    activation: it defines the activation functions applied (see deep_reg()).
+    Ytest: input data for the test set.
+    Ttest: label for supervised trianing for the test set.
+
+    Output:
+    reg: trained model with output corresponding to deep_reg().
+    """
 
     n_samples=np.shape(Ytrain)[0]
     n_entries=np.shape(Ytrain)[1]
@@ -103,8 +154,9 @@ def main_reg(Ytrain, Theta, dim = [30, 30, 30], ct = [.1, .1, .1], n_epochs = 10
 
         # Pick one element to optimize for a given task
 
-        if (epoch_i+1) >= decay_after:#TODO test
-            ratio = 1.0 * (n_epochs - (epoch_i+1))  # epoch_n + 1 because learning rate is set for next epoch
+        if (epoch_i+1) >= decay_after:
+            # epoch_n + 1 because learning rate is set for next epoch
+            ratio = 1.0 * (n_epochs - (epoch_i+1))
             ratio = max(0, ratio / (n_epochs - decay_after))
             sess.run(learning_rate.assign(starter_learning_rate * ratio))
         for batch_i in range(n_samples // batch_size):
@@ -141,6 +193,17 @@ def main_reg(Ytrain, Theta, dim = [30, 30, 30], ct = [.1, .1, .1], n_epochs = 10
     return reg
 
 def encode_from_model(data, X, activation = 'leaky_relu'):
+    """
+    It predicts the output from a model on a given data set.
+    Input:
+    data: data of ML model containing the weights of the model.
+    X: data set for which we predict the output.
+    activation: it defines the activation functions applied (see deep_reg()).
+
+    Output:
+    output: output model preduction from X data.
+    P: list of all outputs per layer.
+    """
 
     L = np.int(data['layers'])-1
 
@@ -173,6 +236,22 @@ def encode_from_model(data, X, activation = 'leaky_relu'):
     return output,P
 
 def ParamEstModel(fname='model',Xtrain=0,Xtest=0,Theta_test=0, version = 'deep_reg', activation = 'leaky_relu', top_fs = 0, v = False):
+    """
+    Parameter estimation of data set from a given model.
+
+    Input:
+    fname: model name.
+    Xtrain: training data set.
+    Xtest: test set.
+    Theta_test: true parameters for test set.
+    version: version of learning code used. Can be 'deep_reg', 'deep_reg_est', deep_regl', 'deep_regh', 'deep_regrh'
+    activation: it defines the activation functions applied (see deep_reg()).
+    top_fs: Specifies how many feature space properties are used for the training, taking the most important ones. 0 if all are taken.
+    v: verbose.
+
+    Output:
+    Results: parameter prediction on test set from ML model. 
+    """
     if top_fs > 0:
         Xtrain = Xtrain[:,:top_fs] # TODO: test
         Xtest = Xtest[:,:top_fs] # TODO: test

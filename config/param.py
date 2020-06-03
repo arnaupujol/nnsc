@@ -15,7 +15,7 @@ params = {
 'learning_rate' : .00001, # learning rate
 'use_err' : False, #defines if bias errors are used in the chi^2
 'selection' : 'original', #defines the data selection used for the analysis.
-'version' : 'deep_reg_est', #version of learning code used. Can be '' (original), 'v4', 'ldae_semi', 'deep_reg', 'deep_reg_est', deep_regh', 'deep_regrh', 'deep_regrhw'
+'version' : 'deep_reg_est', #version of learning code used. Can be 'deep_reg', 'deep_reg_est', deep_regl', 'deep_regh', 'deep_regrh'
 'z' : 0., #pcost for the supervised learning
 'optimizer' : 'Adam', #optimizer used in machine learning proces, can be 'Adam' or 'GD'
 'object' : 'KSB', #object from which the measurements of bias are done
