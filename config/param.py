@@ -1,5 +1,14 @@
-"""Determines the parameters of the codes."""
+"""
+NAMES
 
+This module defines the parameters of the codes.
+
+:Author: Arnau Pujol <arnaupv@gmail.com>
+
+:Version: 1.0
+"""
+
+#params: dictionary with all the parameter names and their default values.
 params = {
 'output_data' : 'm', # data that we want to predict
 'n_train' : 3000, # number of samples used for training
@@ -28,6 +37,7 @@ params = {
 'top_fs' : 0, #Specifies how many feature space properties are used for the training, taking the most important ones. 0 if all are taken.
 }
 
+#par_types: dictionary with all the parameter names and their data type.
 par_types = {
 'output_data' : str,
 'n_train' : int,
@@ -58,7 +68,20 @@ par_types = {
 }
 
 def update(params, argv):
-	"""Updates parameters from default values and arguments."""
+	"""This method updates the parameter values from arguments.
+
+    Parameters
+    ----------
+    params: dict
+        Dictionary specifying all the model parameters
+    argv: list of str
+        List of arguments
+
+    Returns
+    -------
+    It modifies the values of the params dictionary
+
+    """
 	if len(argv) > 1:
 		for i in range(1,len(argv),2):
 			if argv[i + 1] == 'max':

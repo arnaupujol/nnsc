@@ -1,15 +1,37 @@
-"""Definitions of functions to import data."""
+"""
+IMPORT DATA
+
+This module defines methods to import data.
+
+:Author: Arnau Pujol <arnaupv@gmail.com>
+
+:Version: 1.0
+"""
 
 import numpy as np
 
 def get_extra_filter(extra_filter, path = ''):
     """
-    It loads the array of the extra filter applied to the data.
-    Input:
-    extra_filter: string specifying the filter.
-    path: path where the filter is.
-    Output:
-    filter_arr: the filter array.
+    This method loads the array of the extra filter applied to the data.
+
+    Parameters:
+    -----------
+    extra_filter: str {'has_disk', 'has_no_disk'}, optional
+        It specifies the filter
+
+            'has_disk':
+                The mask keeps objects with a disk and a bulge
+
+            'has_no_disk':
+                The mask keeps objects with a single Sersic profile
+
+    path: str
+        Path where the filter is.
+
+    Results:
+    --------
+    filter_arr: boolean np.array
+        The filter array
     """
     if extra_filter == 'has_disk':
         filter_arr = np.load(path + 'has_disk.npy')
@@ -21,15 +43,41 @@ def get_extra_filter(extra_filter, path = ''):
 
 def get_input_data(extra_filter = None, selection = 'original', path = '', name = 'input_data.npy'):
     """
-    It returns the parameters measured for the training.
-    Input:
-    extra_filter: a boolean array defining a selection of galaxies.
-    selection: defines the property selection of data
-    path: directory where the data is.
-    name: name of file.
-    Output:
-    X: 2d array of properties (rows) of the objects (columns)
-    KSB_props: list with property names
+    This method returns the parameters measured for the training.
+
+    Parameters:
+    -----------
+    extra_filter: boolean np.array or None
+        A boolean array (if it is not None) defining a selection of galaxies
+    selection: str {'original', 'qbeta', 'ellip', 'reduced', 'sel8'}
+        It defines the property selection of data
+
+            'original':
+                Original selection of properties from Pujol et al. (2020)
+
+            'qbeta':
+                It selects ellipticity modulus and orientation angle parameters
+
+            'ellip':
+                It selects parameters related with galaxy shape
+
+            'reduced':
+                A reduced selection with 14 properties
+
+            'sel8':
+                A reduced selection with only 8 properties
+
+    path: str
+        Directory where the data is
+    name: str
+        Name of file
+
+    Returns:
+    --------
+    X: np.ndarray
+        Properties (rows) of the objects (columns)
+    input_props: list of strings
+        List with property names
     """
     if selection == 'original':
         list_elements = range(27)
@@ -61,13 +109,21 @@ def get_input_data(extra_filter = None, selection = 'original', path = '', name 
 
 def get_galsim_data(extra_filter = None, path = ''):
     """
-    It returns the parameters defined in galsim.
-    Input:
-    extra_filter: a boolean array defining a selection of galaxies.
-    path: directory where the data is.
-    Output:
-    X: 2d array of properties (rows) of the objects (columns)
-    galsim_props: list with property names
+    This method returns the parameters defined in galsim.
+
+    Parameters:
+    -----------
+    extra_filter: boolean array or None
+        A boolean array (if it is not None) defining a selection of galaxies
+    path: str
+        Directory where the data is
+
+    Returns:
+    --------
+    X: np.ndarray
+        Properties (rows) of the objects (columns)
+    galsim_props: list of strings
+        List with property names
     """
     X = np.load(path + 'galsim_data.npy')
     galsim_props = ['g1', 'g2', 'bulge_n', 'bulge_hlr', 'bulge_q', 'bulge_beta_radians', \
@@ -82,12 +138,19 @@ def get_galsim_data(extra_filter = None, path = ''):
 
 def get_m(extra_filter = None, path = ''):
     """
-    It reads and returns the shear bias m and c measurements for individual images from KSB.
-    Input:
-    extra_filter: a boolean array defining a selection of galaxies.
-    path: directory where the data is.
-    Output:
-    A tuple with m1, m2, c1, c2
+    This method reads and returns the shear bias m and c measurements for
+    individual images from KSB.
+
+    Parameters:
+    -----------
+    extra_filter: boolean np.array or None
+        A boolean array (if it is not None) defining a selection of galaxies
+    path: str
+        Directory where the data is
+
+    Returns:
+    --------
+    A tuple with multiplicative and additive biases (m1, m2, c1, c2)
     """
     m1 = np.load(path + 'm1.npy')
     m2 = np.load(path + 'm2.npy')

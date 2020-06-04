@@ -1,17 +1,30 @@
 """
-This has a diversity of useful functions for NNSC.
+UTILS
+
+This module defines a diversity of useful methods for implementing NNSC.
+
+:Author: Arnau Pujol <arnaupv@gmail.com>
+
+:Version: 1.0
 """
 
 import numpy as np
 
 def XWhite(X):
     """
-    Whiten data by doing PCA.
-    Input:
-    X: 2d array with properties vs objects
-    Output:
-    Xw: data from PCA eigenvectors.
-    P: Covariance of properties.
+    This method applies a data whitening through Singular Value Decomposition.
+
+    Parameters:
+    -----------
+    X: np.ndarray
+        Data with properties vs objects with shape (objects, properties)
+
+    Returns:
+    --------
+    Xw: np.ndarray
+        Data from SVD eigenvectors
+    P: np.ndarray
+        Covariance of properties
     """
     R = np.dot(X.T,X)
     U,S,V = np.linalg.svd(R)
@@ -21,14 +34,25 @@ def XWhite(X):
 
 def select_var(varname, in_X, input_props, galsim_X, galsim_props):
     """
-    It selects input data according to some properties.
-    Input:
-    varname: name of property 1.
-    in_X, galsim_X: the input and galsim data from which to select the properties.
-    input_props, galsim_props: list of input and galsim properties in in_X, galsim_X.
+    This method selects input data according to some properties.
 
-    Output:
-    selected_var: array of selected property.
+    Parameters:
+    -----------
+    varname: str
+        Name of property 1
+    in_X: ndarray
+        The input data from which to select the properties
+    input_props: list of strings
+        List of input properties in in_X
+    galsim_X: ndarray
+        The galsim data from which to select the properties
+    galsim_props: list of strings
+        List of galsim properties in galsim_X.
+
+    Returns:
+    --------
+    selected_var: np.array
+        Array of selected property
     """
     if varname in input_props:
         ii = input_props.index(varname)
@@ -42,14 +66,22 @@ def select_var(varname, in_X, input_props, galsim_X, galsim_props):
 
 def get_sersic_frac(frac, has_disk, has_no_disk):
     """
-    It masks the objects to obtain the right fraction of
+    This method masks the objects to obtain the right fraction of
     galaxies with no disk over the total.
-    Input:
-    frac: fraction of Sersic/total that we want to obtain.
-    has_disk: mask selecting galaxies with disk.
-    has_no_disk: mask selecting single Sersic galaxies.
-    Output:
-    total_mask: final mask with num(Sersic)/total = frac.
+
+    Parameters:
+    -----------
+    frac: float in [0.,100.]
+        Fraction of Sersic/total that we want to obtain
+    has_disk: np.array
+        Mask selecting galaxies with disk
+    has_no_disk: np.array
+        Mask selecting single Sersic galaxies
+
+    Returns:
+    --------
+    total_mask: boolean np.ndarray
+        Final mask with num(Sersic)/total = frac.
     """
     total_mask = has_disk + has_no_disk
     n_disk = np.sum(has_disk)
@@ -70,15 +102,23 @@ def get_sersic_frac(frac, has_disk, has_no_disk):
 
 def get_varnames_to_plot(selection):
     """
-    Given a data selection, it returns the list of variables for which we compare
+    Given a data selection, this method returns the list of variables for which we compare
     the estimated bias performance.
-    Input:
-    selection: string defining the type of selected variables.
-    Output:
-    varnames_1d: list of variables to analyse in 1d.
-    varnames, var2names: two lists of corresponding variables to analyse simultaneously.
-    vars2dowithdisk, vars2dowithoutdisk: index referring to varnames and  var2names
-    to include for galaxies with and without disk.
+
+    Parameters:
+    -----------
+    selection: str {'original', 'reduced', 'qbeta', 'ellip', 'sel8'}
+        The selected variables are defined from this selection
+
+    Returns:
+    --------
+    varnames_1d: list of str
+        List of variables to analyse in 1d
+    varnames, var2names: list of str, list of str
+        Two lists of corresponding variables to analyse simultaneously
+    vars2dowithdisk, vars2dowithoutdisk: list of ints, list of ints
+        Index referring to varnames and var2names to include for galaxies with
+        and without disk.
     """
     varnames_1d = ['bulge_n', 'disk_hlr', 'disk_flux', 'gal_sn', \
     'g1_intrinsic', 'g2_intrinsic', 'psf_theta', 'in_beta', 'in_q']
@@ -135,20 +175,35 @@ def get_varnames_to_plot(selection):
 
 def get_mean_per_2dbin(var, var2, zvar, numbins = [10,10], jk_num = 20, error_mode = 'jk'):#TODO add other arguments
     """
-    It gets the mean value (and error) of a variable as a function
-    of two more.
-    Input:
-    var: array of variable in x-axis.
-    var2: array of variable in y-axis.
-    zvar: array which mean is calculated.
-    numbins: list of len(2) defining the 2d number of bins.
-    jk_num: integer defining the number of JK subsamples used for the error.
-    error_mode: is 'jk', JK error is calculated. If 'std', error obtained from standard deviation.
-    Output:
-    mean_var: 2d-array defining the mean var per 2d-bin.
-    mean_var2: 2d-array defining the mean var2 per 2d-bin.
-    mean_val: mean values of zvar in each 2d bin.
-    err_val: the corresponding error bars of mean_val.
+    This method gets the mean value (and error) of a variable as a function of
+    two more.
+
+    Parameters:
+    -----------
+    var: np.array
+        Array of variable in x-axis
+    var2: np.array
+        Array of variable in y-axis
+    zvar: np.array
+        Array which mean is calculated
+    numbins: [int, int]
+        List of len(2) defining the 2d number of bins
+    jk_num: int
+        Integer defining the number of JK subsamples used for the error
+    error_mode: str {'jk', 'std'}
+        If 'jk', JK error is calculated. If 'std', error obtained from
+        standard deviation (default is 'jk')
+
+    Returns:
+    --------
+    mean_var: np.ndarray
+        2d-array defining the mean var per 2d-bin
+    mean_var2: np.ndarray
+        2d-array defining the mean var2 per 2d-bin
+    mean_val: np.ndarray
+        mean values of zvar in each 2d bin
+    err_val: np.ndarray
+        The corresponding error bars of mean_val
     """
     bin_edges, bin_edges2, mean_var, mean_var2 = get_2dbin_edges(var, var2, numbins=numbins)
     mean_val = np.zeros(numbins)
@@ -169,16 +224,23 @@ def get_mean_per_2dbin(var, var2, zvar, numbins = [10,10], jk_num = 20, error_mo
     return mean_var, mean_var2, mean_val, err_val
 
 def get_bin_edges(array, nbins, equal_bins = True):
-    """From an array, it defines the bin edges
-    which define the number of bins nbins.
-    Input:
-    array: array of values.
-    nbins: number of bins.
-    equal_bins: if True, each bin has the same
-        number of elements. Otherwise, the bin separation
-        is linear
-    Output:
-    bin_edges: array of nbins+1 elements.
+    """From an array, this method defines the bin edges which define
+    the number of bins nbins.
+
+    Parameters:
+    -----------
+    array: np.array
+        Array of values
+    nbins: int
+        Number of bins
+    equal_bins: bool
+        If True, each bin has the same number of elements. Otherwise, the bin
+        separation is linear (default is True)
+
+    Returns:
+    --------
+    bin_edges: np.array
+        Array of nbins+1 elements
     """
     if equal_bins:
         lims = np.linspace(0,len(array[(array < np.inf)]) - 1, nbins + 1)
@@ -190,16 +252,28 @@ def get_bin_edges(array, nbins, equal_bins = True):
 
 def get_2dbin_edges(var, var2, numbins = [10,10]):
     """
-    It defines the edges of the 2d binning of two arrays of values,
+    This method defines the edges of the 2d binning of two arrays of values,
     so that each 2d-bin has the same number of elements.
-    Input:
-    var, var2: array of values form which we bin.
-    numbins: list of two elements defining the number of bins in both dimensions.
-    Output:
-    bin_edges: It defines the values of the edges in the 1st dimension. shape = (numbins[1] + 1)
-    bin_edges2: It defines the edges values of var2 for each bin in var. shape = (numbins[1], numbins[2] + 1)
-    mean_var: mean value of var for each 2d-bin.
-    mean_var2: mean value of var2 for each 2d-bin.
+
+    Parameters:
+    -----------
+    var, var2: np.array, np.array
+        Array of values form which we bin
+    numbins: [int, int]
+        List of two elements defining the number of bins in both dimensions
+
+    Returns:
+    --------
+    bin_edges: np.array
+        It defines the values of the edges in the 1st dimension, with
+        shape = (numbins[1] + 1)
+    bin_edges2: np.ndarray
+        It defines the edges values of var2 for each bin in var, with
+        shape = (numbins[1], numbins[2] + 1)
+    mean_var: np.ndarray
+        Mean value of var for each 2d-bin.
+    mean_var2: np.ndarray
+        Mean value of var2 for each 2d-bin
     """
     #Define edges
     lims = np.linspace(0,len(var) - 1, numbins[0] + 1)
@@ -217,14 +291,19 @@ def get_2dbin_edges(var, var2, numbins = [10,10]):
 
 def jack_knife(var, jk_var):
 	"""
-		It gives the Jack-Knife error of var from the jk_var subsamples.
-		Inputs:
-		var: the mean value of the variable. Constant number.
-		jk_var: the variable from the subsamples. The shape of the jk_var must be (jk subsamples, bins)
+	This method gives the Jack-Knife error of var from the jk_var subsamples.
+	Parameters:
+    -----------
+	var: float or np.array
+        The mean value of the variable
+	jk_var: np.ndarray
+        The variable from the subsamples, with shape (jk subsamples, bins)
 
-	 	Output:
-		jk_err: the JK error of var.
-		"""
+	 Returns:
+     --------
+	jk_err: np.array
+        The JK error of var
+	"""
 	if type(var) == np.ndarray:
 		jk_dim = jk_var.shape[0]
 		err = (jk_dim - 1.)/jk_dim * (jk_var - var)**2.
@@ -237,14 +316,21 @@ def jack_knife(var, jk_var):
 
 def get_jk_indeces_1d(array, jk_num, rand_order = True):
     """
-    It assigns equally distributed indeces to the elements of an array.
-    Input:
-    array: data array.
-    jk_num: number of JK subsamples to identify.
-    rand_order: if True, the indeces are assigned in a random order.
-    Output:
-    jk_indeces: array assigning an index (from 0 to jk_num - 1) to
-        each of the data elements.
+    This method assigns equally distributed indeces to the elements of an array.
+
+    Parameters:
+    -----------
+    array: np.array
+        Data array
+    jk_num: int
+        Number of JK subsamples to identify
+    rand_order: bool
+        If True, the indeces are assigned in a random order (default is True)
+
+    Returns:
+    --------
+    jk_indeces: np.array
+        Array assigning an index (from 0 to jk_num - 1) to each data element
     """
     ratio = len(array)/jk_num + int(len(array)%jk_num > 0)
     jk_indeces = np.arange(len(array), dtype = int)/ratio
@@ -253,13 +339,20 @@ def get_jk_indeces_1d(array, jk_num, rand_order = True):
 
 def chi_square (var_1, err_1, var_2, err_2, use_err = True):
 	"""
-		Calculates and returns the \Chi^2 value of two between two variables with their errors.
-		Inputs:
-		var_1, err_1, var_2, err_2: arrays of values of the same length.
-		use_err: if False, errors are ignored in the calculation.
-		Outputs:
-		chi: float.
-		"""
+	This method calculates and returns the \Chi^2 value of two between two
+    variables with their errors.
+
+	Parameters:
+    -----------
+	var_1, err_1, var_2, err_2: np.arrays
+        Arrays of values of the same length.
+	use_err: bool
+        If False, errors are ignored in the calculation (default is True)
+
+	Returns:
+    --------
+	chi: float
+	"""
 	if var_1.shape == err_1.shape and var_1.shape == var_2.shape and var_1.shape == err_2.shape:
 		if use_err:
 			chi = np.mean((var_1 - var_2)**2. /(err_1**2. + err_2**2))
@@ -272,16 +365,28 @@ def chi_square (var_1, err_1, var_2, err_2, use_err = True):
 
 def select_xvar_yvar(varname, var2name, in_X, input_props, galsim_X, galsim_props, Itest):
     """
-    It selects input data according to some properties.
-    Input:
-    varname: name of property 1.
-    var2name: name of property 2.
-    in_X, galsim_X: the input and galsim data from which to select the properties.
-    input_props, galsim_props: list of input and galsim properties in in_X, galsim_X.
-    Itest: indeces of objects selected from the data.
+    This method selects input data according to some properties.
+
+    Parameters:
+    -----------
+    varname: str
+        Name of property 1
+    var2name: str
+        Name of property 2
+    in_X: np.ndarray
+        The input data from which to select the properties
+    input_props: list of strings
+        List of input properties in in_X
+    galsim_X: np.ndarray
+        The galsim data from which to select the properties
+    galsim_props: list of strings
+        List of galsim properties in galsim_X
+    Itest: np.array
+        Indeces of objects selected from the data
 
     Output:
-    selected_xvar, selected_yvar: the two selected properties.
+    selected_xvar, selected_yvar: np.array, np.array
+        The two selected properties
     """
     if varname in input_props:
         ii = input_props.index(varname)
@@ -303,15 +408,33 @@ def select_xvar_yvar(varname, var2name, in_X, input_props, galsim_X, galsim_prop
 
 def apply_disk_filter(var2name, selected_xvar, selected_yvar, Ptest, Pest):
     """
-    apply filter to restrict to galaxies with or without disk if necessary.
-    Input:
-    var2name: name of property.
-    selected_xvar, selected_yvar: x and y input properties.
-    Ptest, Pest: true and estimated parameters.
+    This method applies a filter to restrict to galaxies with or without disk
+    if necessary.
 
-    Output:
-    xvar, yvar: input properties with applied filter
-    test_var, est_var: true and estimated parameters with applied filter.
+    Parameters:
+    -----------
+    var2name: str
+        Name of property
+    selected_xvar: np.array
+        Input property in x-axis
+    selected_yvar: np.array
+        Input property in y-axis
+    Ptest: np.ndarray
+        True parameters
+    Pest: np.ndarray
+        Estimated parameters
+
+    Returns:
+    --------
+    xvar, yvar: np.array, np.array
+        Input properties with applied filter
+    test_var, est_var: np.array, np.array
+        True and estimated parameters with applied filter
+
+    Note:
+    -----
+    If several bias components are estimated, so if Ptest and Pest have more
+    than one component, only the 1st is taken.
     """
     if 'disk' in var2name or 'bulge_n' in var2name:
         if 'disk_flux' in var2name:
@@ -325,13 +448,13 @@ def apply_disk_filter(var2name, selected_xvar, selected_yvar, Ptest, Pest):
         else:
             xvar = selected_xvar
         yvar = selected_yvar[filter_arr]
-        test_var = Ptest[:,0][filter_arr]#If several bias components are estimated, only the 1st is taken here
-        est_var = Pest[:,0][filter_arr]#If several bias components are estimated, only the 1st is taken here
+        test_var = Ptest[:,0][filter_arr]
+        est_var = Pest[:,0][filter_arr]
     else:
         xvar = selected_xvar
         yvar = selected_yvar
-        test_var = Ptest[:,0]#If several bias components are estimated, only the 1st is taken here
-        est_var = Pest[:,0]#If several bias components are estimated, only the 1st is taken here
+        test_var = Ptest[:,0]
+        est_var = Pest[:,0]
     return xvar, yvar, test_var, est_var
 
 def yxscales(varname, var2name):

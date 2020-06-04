@@ -1,7 +1,27 @@
-"""It defines the names of the files saves as output."""
+"""
+NAMES
+
+This module defines the names of the files saves as output.
+
+:Author: Arnau Pujol <arnaupv@gmail.com>
+
+:Version: 1.0
+"""
 
 def fname(params):
-	"""It returns de fname of the model used in bias_ldae.py"""
+	"""This method defines de fname of the model used in bias_ldae.py
+
+    Parameters:
+    -----------
+    params: dict
+        Dictionary specifying all the model parameters
+
+    Returns:
+    --------
+    fname: str
+        Name of the model
+
+    """
 	fname='MODEL' + params['version'] + '_' + params['selection'] + '_' + params['output_data'] + '_ntr_' + str(params['n_train'])+ '_nts_' + str(params['n_test']) + '_dim_' + str(params['dim1']) + '_'+ str(params['dim2'])
 	if params['dim3'] > 0:
 		fname += '_' + str(params['dim3'])
