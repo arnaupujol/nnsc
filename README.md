@@ -72,10 +72,12 @@ python nnsc.py par_name1 par_val1 par_name2 par_val2 … par_nameN par_valN
 where `par_nameX` specifies the names of the parameter we want to define and `par_valX` corresponds to the value that we want to give to the parameter.
 
 For example, if we want to run `nnsc.py` with:
-```param[‘output_data’] = 'm1'```
-```param[‘n_train’] = 10000```
-```param[‘n_epochs’] = 100
-```
+
+`param[‘output_data’] = 'm1'`
+
+`param[‘n_train’] = 10000`
+
+`param[‘n_epochs’] = 100`
 
 we have to run:
 
