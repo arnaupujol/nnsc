@@ -3,13 +3,13 @@ This document contains information about the data from this directory.
 The data refers to a random subsample of 309550 objects from the catalogue used
 for Pujol et al. (2020). It contains:
 
-### `c1.npy`, `c2.npy`, `m1.npy`, `m2.npy`:
----------------
+`c1.npy`, `c2.npy`, `m1.npy`, `m2.npy`:
+
 These are numpy arrays with the values of additive and multiplicative bias for
 all the objects.
 
-### `galsim_data.npy`:
-----------------
+`galsim_data.npy`:
+
 This 2d-array contains input simulation properties (from galsim) used to
 generate the images. Its shape is (309550, 21), corresponding to the following
 21 properties for the 309550 objects:
@@ -57,8 +57,8 @@ generate the images. Its shape is (309550, 21), corresponding to the following
 
 'gx_intrinsic': intrinsic ellipticity $e_x$ with respect to PSF orientation angle
 
-### `input_data.npy`:
----------------
+`input_data.npy`:
+
 This 2d-array contains measured properties used as input for the training.
 Its shape is (309550, 27), corresponding to the following 27 properties
 for the 309550 objects (also in Table 1 in Pujol et al. (2020)):
@@ -117,8 +117,8 @@ for the 309550 objects (also in Table 1 in Pujol et al. (2020)):
 
 'KSB_final_ex': galaxy ellipticity $e_x$ from KSB
 
-### `has_disk.npy`, `has_no_disk.npy`:
-------------------------------
+`has_disk.npy`, `has_no_disk.npy`:
+
 Boolean numpy arrays specifying whether the simulated galaxies are single Sersic
 profiles (they have no disk) or they are a combination of disk and bulge (they
 have disk). The two arrays are opposite between them.
