@@ -14,9 +14,9 @@ This 2d-array contains input simulation properties (from galsim) used to
 generate the images. Its shape is (309550, 21), corresponding to the following
 21 properties for the 309550 objects:
 
-'g1': original shear $g_1$ from GREAT3 (not applied)
+'g1': original shear g_1 from GREAT3 (not applied)
 
-'g2': original shear $g_2$ from GREAT3 (not applied)
+'g2': original shear g_2 from GREAT3 (not applied)
 
 'bulge_n': Sersic index
 
@@ -38,9 +38,9 @@ generate the images. Its shape is (309550, 21), corresponding to the following
 
 'gal_sn': SNR
 
-'g1_intrinsic': intrinsic ellipticity $e_1$
+'g1_intrinsic': intrinsic ellipticity e_1
 
-'g2_intrinsic': intrinsic ellipticity $e_2$
+'g2_intrinsic': intrinsic ellipticity e_2
 
 'psf_theta': PSF orientation angle
 
@@ -49,13 +49,13 @@ generate the images. Its shape is (309550, 21), corresponding to the following
 'in_q': input axis ratio
 
 
-'gp': shear $g_+$ with respect to PSF orientation angle (not applied)
+'gp': shear g_+ with respect to PSF orientation angle (not applied)
 
-'gx': shear $g_x$ with respect to PSF orientation angle (not applied)
+'gx': shear g_x with respect to PSF orientation angle (not applied)
 
-'gp_intrinsic': intrinsic ellipticity $e_+$ with respect to PSF orientation angle
+'gp_intrinsic': intrinsic ellipticity e_+ with respect to PSF orientation angle
 
-'gx_intrinsic': intrinsic ellipticity $e_x$ with respect to PSF orientation angle
+'gx_intrinsic': intrinsic ellipticity e_x with respect to PSF orientation angle
 
 `input_data.npy`:
 
@@ -63,9 +63,9 @@ This 2d-array contains measured properties used as input for the training.
 Its shape is (309550, 27), corresponding to the following 27 properties
 for the 309550 objects (also in Table 1 in Pujol et al. (2020)):
 
-'gFIT_final_e1': galaxy ellipticity $e_1$ from gFIT
+'gFIT_final_e1': galaxy ellipticity e_1 from gFIT
 
-'gFIT_final_e2': galaxy ellipticity $e_2$ from gFIT
+'gFIT_final_e2': galaxy ellipticity e_2 from gFIT
 
 'gFIT_out_flux': galaxy flux from gFIT
 
@@ -101,9 +101,9 @@ for the 309550 objects (also in Table 1 in Pujol et al. (2020)):
 
 'gFIT_out_q': galaxy axis ratio from gFIT
 
-'KSB_final_e1': galaxy ellipticity $e_1$ from KSB
+'KSB_final_e1': galaxy ellipticity e_1 from KSB
 
-'KSB_final_e2': galaxy ellipticity $e_2$ from KSB
+'KSB_final_e2': galaxy ellipticity e_2 from KSB
 
 'KSB_out_scale': scale of window function for KSB
 
@@ -113,9 +113,9 @@ for the 309550 objects (also in Table 1 in Pujol et al. (2020)):
 
 'KSB_out_q': galaxy axis ratio from KSB
 
-'KSB_final_ep': galaxy ellipticity $e_+$ from KSB
+'KSB_final_ep': galaxy ellipticity e_+ from KSB
 
-'KSB_final_ex': galaxy ellipticity $e_x$ from KSB
+'KSB_final_ex': galaxy ellipticity e_x from KSB
 
 `has_disk.npy`, `has_no_disk.npy`:
 
