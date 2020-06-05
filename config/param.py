@@ -68,7 +68,7 @@ par_types = {
 }
 
 def update(params, argv):
-	"""This method updates the parameter values from arguments.
+    """This method updates the parameter values from arguments.
 
     Parameters
     ----------
@@ -82,20 +82,20 @@ def update(params, argv):
     It modifies the values of the params dictionary
 
     """
-	if len(argv) > 1:
-		for i in range(1,len(argv),2):
-			if argv[i + 1] == 'max':
-				params[argv[i]] = np.inf
-			elif argv[i + 1] == 'min':
-				params[argv[i]] = -np.inf
-			elif argv[i + 1] == 'False':
-				params[argv[i]] = False
-			elif argv[i + 1] == 'True':
-				params[argv[i]] = True
-			else:
-				params[argv[i]] = par_types[argv[i]](argv[i + 1])
-	for i in params:
-		if params[i] == 'max':
-			params[i] = np.inf
-		elif params[i] == 'min':
-			params[i] = -np.inf
+    if len(argv) > 1:
+        for i in range(1,len(argv),2):
+            if argv[i + 1] == 'max':
+                params[argv[i]] = np.inf
+            elif argv[i + 1] == 'min':
+                params[argv[i]] = -np.inf
+            elif argv[i + 1] == 'False':
+                params[argv[i]] = False
+            elif argv[i + 1] == 'True':
+                params[argv[i]] = True
+            else:
+                params[argv[i]] = par_types[argv[i]](argv[i + 1])
+    for i in params:
+        if params[i] == 'max':
+            params[i] = np.inf
+        elif params[i] == 'min':
+            params[i] = -np.inf
