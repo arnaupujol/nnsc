@@ -15,13 +15,13 @@ import nnsc.utils as ut
 
 def costs(n_epochs, costs, output_path, save = False, show = True, verbose = True, text = '', costs_v = None, yscale = 'linear', ylim = None):
     """
-	This method plots the evolution of the cost function over the epochs.
+    This method plots the evolution of the cost function over the epochs.
 
-	Parameters:
+    Parameters:
     -----------
-	n_epochs: int
+    n_epochs: int
         Number of epochs
-	costs: np.array
+    costs: np.array
         Array with the n_epochs different costs
     output_path: str
         Path to the output plot file
@@ -29,9 +29,9 @@ def costs(n_epochs, costs, output_path, save = False, show = True, verbose = Tru
         If True, it saves the plots (default is False)
     show: bool
         If True, it shows the plot (default is True)
-	verbose: bool
+    verbose: bool
         If True, some text is shown (default is True)
-	text: str
+    text: str
         Text annotated in the plot
     costs_v: np.array
         Array with the n_epochs different validation costs
@@ -40,27 +40,27 @@ def costs(n_epochs, costs, output_path, save = False, show = True, verbose = Tru
     ylim: [float, float], optional
         It can be a 2 lenght list specifying the y axis limits
 
-	Returns:
+    Returns:
     --------
-	Plot showing the costs
-	"""
-        plt.plot(range(n_epochs), costs, lw = 3, alpha = .8, label = 'training set')
-        if costs_v is not None:
-            plt.plot(range(n_epochs), costs_v, lw = 3, alpha = .8, label = 'test set')
-            plt.legend(frameon = False)
-        plt.xlabel('epoch')
-        plt.ylabel('cost')
-        plt.yscale(yscale)
-        if ylim is not None:
-            plt.ylim(ylim)
-        plt.annotate(text, (.3,.8), xycoords = 'figure fraction')
-        if save:
-                plt.savefig(output_path)
-                print("costs plot saved in " + output_path)
-        if show:
-                plt.show()
-        else:
-                plt.close()
+    Plot showing the costs
+    """
+    plt.plot(range(n_epochs), costs, lw = 3, alpha = .8, label = 'training set')
+    if costs_v is not None:
+        plt.plot(range(n_epochs), costs_v, lw = 3, alpha = .8, label = 'test set')
+        plt.legend(frameon = False)
+    plt.xlabel('epoch')
+    plt.ylabel('cost')
+    plt.yscale(yscale)
+    if ylim is not None:
+        plt.ylim(ylim)
+    plt.annotate(text, (.3,.8), xycoords = 'figure fraction')
+    if save:
+            plt.savefig(output_path)
+            print("costs plot saved in " + output_path)
+    if show:
+            plt.show()
+    else:
+            plt.close()
 
 
 def plot_mean_per_2dbin(var, varname, var2, var2name, zvar, zvarname, numbins = [10,10], jk_num = 20, error_mode = 'jk', show = True, save = False, out_name = '/tmp/plot.pdf', xscale = 'linear', yscale = 'linear', xlim = None, ylim = None, cmap = 'viridis', vmin = None, vmax = None):

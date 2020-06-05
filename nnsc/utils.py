@@ -290,18 +290,18 @@ def get_2dbin_edges(var, var2, numbins = [10,10]):
     return bin_edges, bin_edges2, mean_var, mean_var2
 
 def jack_knife(var, jk_var):
-	"""
-	This method gives the Jack-Knife error of var from the jk_var subsamples.
-	Parameters:
+    """
+    This method gives the Jack-Knife error of var from the jk_var subsamples.
+    Parameters:
     -----------
-	var: float or np.array
+    var: float or np.array
         The mean value of the variable
-	jk_var: np.ndarray
+        jk_var: np.ndarray
         The variable from the subsamples, with shape (jk subsamples, bins)
 
-	 Returns:
-     --------
-	jk_err: np.array
+    Returns:
+    --------
+    jk_err: np.array
         The JK error of var
 	"""
 	if type(var) == np.ndarray:
@@ -338,30 +338,30 @@ def get_jk_indeces_1d(array, jk_num, rand_order = True):
     return jk_indeces
 
 def chi_square (var_1, err_1, var_2, err_2, use_err = True):
-	"""
-	This method calculates and returns the \Chi^2 value of two between two
+    """
+    This method calculates and returns the \Chi^2 value of two between two
     variables with their errors.
 
-	Parameters:
+    Parameters:
     -----------
-	var_1, err_1, var_2, err_2: np.arrays
+    var_1, err_1, var_2, err_2: np.arrays
         Arrays of values of the same length.
-	use_err: bool
+        use_err: bool
         If False, errors are ignored in the calculation (default is True)
 
-	Returns:
+    Returns:
     --------
-	chi: float
-	"""
-	if var_1.shape == err_1.shape and var_1.shape == var_2.shape and var_1.shape == err_2.shape:
-		if use_err:
-			chi = np.mean((var_1 - var_2)**2. /(err_1**2. + err_2**2))
-			return chi
-		else:
-			chi = np.mean((var_1 - var_2)**2.)
-			return chi
-	else:
-		print("All the variables of Chi_square must have the same shape")
+    chi: float
+    """
+    if var_1.shape == err_1.shape and var_1.shape == var_2.shape and var_1.shape == err_2.shape:
+        if use_err:
+            chi = np.mean((var_1 - var_2)**2. /(err_1**2. + err_2**2))
+            return chi
+        else:
+            chi = np.mean((var_1 - var_2)**2.)
+            return chi
+    else:
+        print("All the variables of Chi_square must have the same shape")
 
 def select_xvar_yvar(varname, var2name, in_X, input_props, galsim_X, galsim_props, Itest):
     """
@@ -396,7 +396,7 @@ def select_xvar_yvar(varname, var2name, in_X, input_props, galsim_X, galsim_prop
         ii = galsim_props.index(varname)
         selected_xvar = galsim_X[:,ii][Itest]
     else:
-    	print("ERROR: variable " + varname + " not found in either input_props or galsim_props")
+        print("ERROR: variable " + varname + " not found in either input_props or galsim_props")
     if var2name in input_props:
         jj = input_props.index(var2name)
         selected_yvar = in_X[:,jj][Itest]
@@ -404,7 +404,7 @@ def select_xvar_yvar(varname, var2name, in_X, input_props, galsim_X, galsim_prop
         jj = galsim_props.index(var2name)
         selected_yvar = galsim_X[:,jj][Itest]
     else:
-    	print("ERROR: variable " + var2name + " not found in either input_props or galsim_props")
+        print("ERROR: variable " + var2name + " not found in either input_props or galsim_props")
     return selected_xvar, selected_yvar
 
 def apply_disk_filter(var2name, selected_xvar, selected_yvar, Ptest, Pest):
@@ -431,7 +431,7 @@ def apply_disk_filter(var2name, selected_xvar, selected_yvar, Ptest, Pest):
         Input properties with applied filter
     test_var, est_var: np.array, np.array
         True and estimated parameters with applied filter
-
+    
     Note:
     -----
     If several bias components are estimated, so if Ptest and Pest have more
