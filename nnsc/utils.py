@@ -384,7 +384,8 @@ def select_xvar_yvar(varname, var2name, in_X, input_props, galsim_X, galsim_prop
     Itest: np.array
         Indeces of objects selected from the data
 
-    Output:
+    Returns:
+    --------
     selected_xvar, selected_yvar: np.array, np.array
         The two selected properties
     """
@@ -459,11 +460,21 @@ def apply_disk_filter(var2name, selected_xvar, selected_yvar, Ptest, Pest):
 
 def yxscales(varname, var2name):
     """
-    it defines the x and y scales of two variables.
-    Input:
-    varname, var2name: variables in x and y.
-    Output:
-    xscale, yscales: x and y scales of plot.
+    This method defines the x and y scales of two variables.
+
+    Parameters:
+    -----------
+    varname: str
+        Variable name in x
+    var2name: str
+        Variable name in y
+
+    Returns:
+    --------
+    xscale: str {'log', 'linear'}
+        X scale of plot
+    yscale: str {'log', 'linear'}
+        Y scale of plot
     """
     if varname in ['bulge_hlr', 'bulge_flux', 'KSB_out_sn']:
         xscale = 'log'
@@ -477,11 +488,17 @@ def yxscales(varname, var2name):
 
 def xscale(varname):
     """
-    it defines the x scales of a variable.
-    Input:
-    varname: variable name.
-    Output:
-    xscale: scale of plot.
+    This method defines the scale of a variable.
+
+    Parameters:
+    -----------
+    varname: str
+        Variable name
+
+    Returns:
+    --------
+    xscale: str {'log', 'linear'}
+        Scale of plot
     """
     if varname in ['bulge_hlr', 'bulge_flux', 'KSB_out_sn', 'disk_hlr', 'disk_flux', 'gFIT_out_flux']:
         xscale = 'log'
@@ -491,11 +508,17 @@ def xscale(varname):
 
 def get_timetext(time_secs):
     """
-    It returns a string describing a time period.
-    Input:
-    time_secs: number of seconds in time interval.
-    Output:
-    timetext: string describing the time.
+    This method returns a string describing a time period.
+
+    Parameters:
+    -----------
+    time_secs: int or float
+        Number of seconds in time interval
+
+    Returns:
+    --------
+    timetext: str
+        String describing the time
     """
     if time_secs < 60.:
         timetext = 't='+str(round((time_secs), 2)) + 'sec'
