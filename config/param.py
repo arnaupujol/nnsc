@@ -28,7 +28,6 @@ params = {
 'z' : 0., #pcost for the supervised learning
 'optimizer' : 'Adam', #optimizer used in machine learning proces, can be 'Adam' or 'GD'
 'object' : 'KSB', #object from which the measurements of bias are done
-'test' : False, #if True, it uses the data and paths from the test mode.
 'lr_decay' : 15, #epochs after which to begin the learning rate decay
 'make_plots' : True, #Specify if plots are created.
 'extra_filter' : '', #Specify an extra selection cut. Can be '' (none), 'has_disk', 'has_no_disk', or 'sfrac#' (fraction of sing. Sersic), where # is in [0,100].
@@ -51,13 +50,12 @@ par_types = {
 'n_epochs' : int,
 'batch_size' : int,
 'learning_rate' : float,
-'use_err' : bool, #defines if bias errors are used in the chi^2
+'use_err' : bool,
 'selection' : str,
 'version' : str,
 'z' : float,
 'optimizer' : str,
-'object' : 'KSB', #object from which the measurements of bias are done
-'test' : bool,
+'object' : str,
 'lr_decay' : int,
 'make_plots' : bool,
 'extra_filter' : str,

@@ -303,16 +303,16 @@ def jack_knife(var, jk_var):
     --------
     jk_err: np.array
         The JK error of var
-	"""
-	if type(var) == np.ndarray:
-		jk_dim = jk_var.shape[0]
-		err = (jk_dim - 1.)/jk_dim * (jk_var - var)**2.
-		jk_err = np.sqrt(np.sum(err, axis = 0))
-	else:
-		jk_dim = len(jk_var)
-		err = (jk_dim - 1.)/jk_dim * (jk_var - var)**2.
-		jk_err = np.sqrt(np.sum(err))
-	return jk_err
+    """
+    if type(var) == np.ndarray:
+        jk_dim = jk_var.shape[0]
+        err = (jk_dim - 1.)/jk_dim * (jk_var - var)**2.
+        jk_err = np.sqrt(np.sum(err, axis = 0))
+    else:
+        jk_dim = len(jk_var)
+        err = (jk_dim - 1.)/jk_dim * (jk_var - var)**2.
+        jk_err = np.sqrt(np.sum(err))
+    return jk_err
 
 def get_jk_indeces_1d(array, jk_num, rand_order = True):
     """
@@ -431,7 +431,7 @@ def apply_disk_filter(var2name, selected_xvar, selected_yvar, Ptest, Pest):
         Input properties with applied filter
     test_var, est_var: np.array, np.array
         True and estimated parameters with applied filter
-    
+
     Note:
     -----
     If several bias components are estimated, so if Ptest and Pest have more
