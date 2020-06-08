@@ -34,6 +34,8 @@ params = {
 'show' : True, #Specify if plots are shown.
 'save' : False, #Specify if output is saved.
 'top_fs' : 0, #Specifies how many feature space properties are used for the training, taking the most important ones. 0 if all are taken.
+'output_path' : 'output/', #Specifies the output path to save the results.
+'input_data' : 'data/', #Specifies the directory where the input data is.
 }
 
 #par_types: dictionary with all the parameter names and their data type.
@@ -63,6 +65,8 @@ par_types = {
 'show' : bool,
 'save' : bool,
 'top_fs' : int,
+'output_path' : str,
+'input_data' : str
 }
 
 def update(params, argv):

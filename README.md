@@ -36,7 +36,6 @@ where the arguments after the command define the parameters of the calculations.
 	- `param.py`: in this file all the parameters used in this repository are defined.
 	The variable params is a dictionary with the names of all the parameters that can be used and their respective original values.
 	Example: `params[‘n_train’]` is an integer that defines the number objects in the training sample.
-    - `paths.py`: it defined the input and output directories.
 - data directory: directory where mock data is located. The data is stored with numpy arrays.
 - nnsc directory: contains python modules that are used for the code executable.
 Example: `deep_reg.py` defines functions to generate the DNN for a regression to estimate shear bias as in Pujol et al. (in prep).

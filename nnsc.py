@@ -30,8 +30,8 @@ params = param.params
 param.update(params, sys.argv)
 
 #Defining paths
-output_path = paths.output_data
-datapath = paths.input_data
+output_path = params['output_path']
+datapath = params['input_data']
 
 #Define whether a filter on the galaxy components is applied
 extra_filter = get_extra_filter(params['extra_filter'], path = datapath)
