@@ -17,6 +17,18 @@ All the packages that are required so that all the codes can run are:
 - matplotlib
 - tensorflow
 
+Installation:
+----------------------
+To install the repository, first you have to clone it to your local machine.
+Then you can simply run:
+
+```
+$ python setup.py install
+```
+
+In the text file `requirements.txt` the required packages are specified and
+installed if needed. The versions required here work at least for Python 3.7.0.
+
 Structure of the repository:
 ----------------------------
 The main directory has the following elements:

@@ -10,7 +10,8 @@ This module defines the methods to make a regression from a deep neural network.
 
 
 import numpy as np
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()#It enables to use the behaviour from tensorflow 1
 import scipy.io as sio
 from copy import deepcopy as dp
 
