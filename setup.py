@@ -8,7 +8,7 @@ with open('requirements.txt') as open_file:
 
 setuptools.setup(
     name="nnsc",
-    version="0.0.1",
+    version="1.0.0",
     author="arnaupujol",
     author_email="arnaupv@gmail.com",
     description="Neural Network for Shear Correction",
@@ -18,9 +18,9 @@ setuptools.setup(
     install_requires=install_requires,
     packages=setuptools.find_packages(),
     classifiers=[
-        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=2.6',
+    python_requires='>=3.7',
 )

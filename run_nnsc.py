@@ -6,7 +6,7 @@ the method presented in Pujol et al. (2020).
 
 :Author: Arnau Pujol <arnaupv@gmail.com>
 
-:Version: 1.0
+:Version: 1.0.0
 """
 
 import os

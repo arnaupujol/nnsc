@@ -5,7 +5,7 @@ This module defines the parameters of the codes.
 
 :Author: Arnau Pujol <arnaupv@gmail.com>
 
-:Version: 1.0
+:Version: 1.0.0
 """
 
 #params: dictionary with all the parameter names and their default values.

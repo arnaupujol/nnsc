@@ -5,7 +5,7 @@ This module defines the methods to make a regression from a deep neural network.
 
 :Author: Arnau Pujol <arnaupv@gmail.com>
 
-:Version: 1.0
+:Version: 1.0.0
 """
 
 
