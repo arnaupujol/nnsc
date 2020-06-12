@@ -2,7 +2,7 @@
 
 > Author: **Arnau Pujol**  
 > Year: **2020**  
-> Version: **1.0**  
+> Version: **1.0.0**  
 > Reference Paper: Pujol et al. (2020)
 
 
