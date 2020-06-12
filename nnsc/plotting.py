@@ -1,75 +1,120 @@
 """
-It defines functions that plot results.
+PLOTTING
+
+This module defines methods to visualize the results.
+
+:Author: Arnau Pujol <arnaupv@gmail.com>
+
+:Version: 1.0
 """
+
 
 import numpy as np
 import matplotlib.pyplot as plt
 import nnsc.utils as ut
 
 def costs(n_epochs, costs, output_path, save = False, show = True, verbose = True, text = '', costs_v = None, yscale = 'linear', ylim = None):
-        """
-	It plots the evolution of the cost function
-	over the epochs.
-	Input:
-	n_epochs: integer number of epochs.
-	costs: array with the n_epochs different costs.
-    output_path: path to the output plot file.
-    save: if True, it saves the plots.
-    show: if True, it shows the plot.
-	verbose: if True, some text is shown.
-	text: text annotated in the plot
-    costs_v: array with the n_epochs different validation costs.
-    yscale: can be 'linear' or 'log'.
-    ylim: can be a 2 lenght list specifying the y ais limits
-	Output:
-	Plot of costs
-	"""
-        plt.plot(range(n_epochs), costs, lw = 3, alpha = .8, label = 'training set')
-        if costs_v is not None:
-            plt.plot(range(n_epochs), costs_v, lw = 3, alpha = .8, label = 'test set')
-            plt.legend(frameon = False)
-        plt.xlabel('epoch')
-        plt.ylabel('cost')
-        plt.yscale(yscale)
-        if ylim is not None:
-            plt.ylim(ylim)
-        plt.annotate(text, (.3,.8), xycoords = 'figure fraction')
-        if save:
-                plt.savefig(output_path)
-                print("costs plot saved in " + output_path)
-        if show:
-                plt.show()
-        else:
-                plt.close()
+    """
+    This method plots the evolution of the cost function over the epochs.
+
+    Parameters:
+    -----------
+    n_epochs: int
+        Number of epochs
+    costs: np.array
+        Array with the n_epochs different costs
+    output_path: str
+        Path to the output plot file
+    save: bool
+        If True, it saves the plots (default is False)
+    show: bool
+        If True, it shows the plot (default is True)
+    verbose: bool
+        If True, some text is shown (default is True)
+    text: str
+        Text annotated in the plot
+    costs_v: np.array
+        Array with the n_epochs different validation costs
+    yscale: str {'linear','log'}
+        Scale for y axis (default is 'linear')
+    ylim: [float, float], optional
+        It can be a 2 lenght list specifying the y axis limits
+
+    Returns:
+    --------
+    Plot showing the costs
+    """
+    plt.plot(range(n_epochs), costs, lw = 3, alpha = .8, label = 'training set')
+    if costs_v is not None:
+        plt.plot(range(n_epochs), costs_v, lw = 3, alpha = .8, label = 'test set')
+        plt.legend(frameon = False)
+    plt.xlabel('epoch')
+    plt.ylabel('cost')
+    plt.yscale(yscale)
+    if ylim is not None:
+        plt.ylim(ylim)
+    plt.annotate(text, (.3,.8), xycoords = 'figure fraction')
+    if save:
+            plt.savefig(output_path)
+            print("costs plot saved in " + output_path)
+    if show:
+            plt.show()
+    else:
+            plt.close()
 
 
 def plot_mean_per_2dbin(var, varname, var2, var2name, zvar, zvarname, numbins = [10,10], jk_num = 20, error_mode = 'jk', show = True, save = False, out_name = '/tmp/plot.pdf', xscale = 'linear', yscale = 'linear', xlim = None, ylim = None, cmap = 'viridis', vmin = None, vmax = None):
     """
-    It plots the mean value (and error) of a variable as a function
+    This method plots the mean value (and error) of a variable as a function
     of two more.
-    Input:
-    var: array of variable in x-axis.
-    var_name: name of x-axis.
-    var2: array of variable in y-axis.
-    var2name: name of y-axis
-    zvar: array which mean is calculated.
-    zvarname: name of variable zvar, shown in plot title.
-    numbins: list of len(2) defining the 2d number of bins.
-    jk_num: integer defining the number of JK subsamples used for the error.
-    error_mode: is 'jk', JK error is calculated. If 'std', error obtained from standard deviation.
-    show: if True, it shows the plot.
-    save: if True, it saves the plots.
-    out_name: name of the output plot file.
-    xscale, yscale: scale of axes, can be 'linear' or 'log'
-    xlim, ylim: x and y ranges of plot.
-    cmap: colour map used for the scatter plots.
-    vmin, vmax: minimum and maximum values for the colour map.
 
-    Output plots showing:
-    mean_var: 2d-array defining the mean var per 2d-bin.
-    mean_var2: 2d-array defining the mean var2 per 2d-bin.
-    mean_val: mean values of zvar in each 2d bin.
-    err_val: the corresponding error bars of mean_val.
+    Parameters:
+    -----------
+    var: np.array
+        Array of variable in x-axis
+    var_name: str
+        Name of x-axis
+    var2: np.array
+        Array of variable in y-axis
+    var2name: str
+        Name of y-axis
+    zvar: np.array
+        Array which mean is calculated
+    zvarname: str
+        Name of variable zvar, shown in plot title
+    numbins: [int, int]
+        List of len(2) defining the 2d number of bins
+    jk_num: int
+        Integer defining the number of JK subsamples used for the error
+    error_mode: str {'jk', 'std'}
+        If 'jk', JK error is calculated. If 'std', error obtained from standard
+        deviation (default is 'jk')
+    show: bool
+        If True, it shows the plot
+    save: bool
+        If True, it saves the plots
+    out_name: str
+        Name of the output plot file
+    xscale: str {'linear', 'log'}
+        Scale of x-axis (default is 'linear')
+    yscale: str {'linear', 'log'}
+        Scale of y-axis (default is 'linear')
+    xlim: [float, float], optional
+        Range of values in x-axis
+    ylim: [float, float], optional
+        Range of values in y-axis
+    cmap: str
+        Colour map used for the scatter plots
+    vmin, vmax: float, float
+        Minimum and maximum values for the colour map
+
+    Returns:
+    --------
+    Plots showing:
+        mean_var: 2d-array defining the mean var per 2d-bin.
+        mean_var2: 2d-array defining the mean var2 per 2d-bin.
+        mean_val: mean values of zvar in each 2d bin.
+        err_val: the corresponding error bars of mean_val.
     """
     mean_var, mean_var2, mean_val, err_val = ut.get_mean_per_2dbin(var, var2, zvar, numbins = numbins, jk_num = jk_num, error_mode = error_mode)
     #plt.figure(0)
@@ -105,31 +150,57 @@ def plot_mean_per_2dbin(var, varname, var2, var2name, zvar, zvarname, numbins = 
 
 def plot_chi2_per_2dbin(var, varname, var2, var2name, zvar, zvar2, titlename, numbins = [10,10], jk_num = 20, error_mode = 'jk', show = True, save = False, out_name = '/tmp/plot', xscale = 'linear', yscale = 'linear', use_err = True, make_plots = True, vmax = None):
     """
-    It plots the chi^2 of the estimation vs true values as a function
+    This method plots the error on the estimation vs true values as a function
     of two binned properties.
-    Input:
-    var: array of variable in x-axis.
-    var_name: name of x-axis.
-    var2: array of variable in y-axis.
-    var2: array of variable in y-axis.
-    zvar: array which mean is calculated.
-    zvar2: array which mean is calculated and compared with zvar.
-    titlename: name shown in plot title.
-    numbins: list of len(2) defining the 2d number of bins.
-    jk_num: integer defining the number of JK subsamples used for the error.
-    error_mode: is 'jk', JK error is calculated. If 'std', error obtained from standard deviation.
-    show: if True, it shows the plot.
-    save: if True, it saves the plots.
-    out_name: name of the output plot file.
-    xscale, yscale: scale of axes, can be 'linear' or 'log'
-    use_err: if True, it uses the error bars in the calculation of chi^2
-    make_plots: specifies if the plots are made.
-    vmax: it specifies the maximum value for the colormap.
 
-    Output plots showing:
-    mean_var: 2d-array defining the mean var per 2d-bin.
-    mean_var2: 2d-array defining the mean var2 per 2d-bin.
-    chi2: chi^2 between zvar and zvar2.
+    Properties:
+    -----------
+    var: np.array
+        Array of variable in x-axis
+    var_name: str
+        Name of variable in x-axis
+    var2: np.array
+        Array of variable in y-axis
+    var2name: str
+        Name of variable in y-axis
+    zvar: np.array
+        Array which mean is calculated
+    zvar2: np.array
+        Array which mean is calculated and compared with zvar
+    titlename: str
+        Name shown in plot title
+    numbins: [int, int]
+        List of len(2) defining the 2d number of bins
+    jk_num: int
+        Integer defining the number of JK subsamples used for the error
+    error_mode: str {'jk', 'std'}
+        If 'jk', JK error is calculated. If 'std', error obtained from standard
+        deviation (default is 'jk')
+    show: bool
+        If True, it shows the plot
+    save: bool
+        If True, it saves the plots
+    out_name: str
+        Name of the output plot file
+    xscale: str {'linear', 'log'}
+        Scale of x-axis (default is 'linear')
+    yscale: str {'linear', 'log'}
+        Scale of y-axis (default is 'linear')
+    use_err: bool
+        If True, it uses the error bars to calculate of chi^2 (default is True)
+    make_plots: bool
+        It specifies if the plots are made (default is True)
+    vmax: float
+        It specifies the maximum value for the colormap
+
+    Returns:
+    --------
+    Plots showing:
+        mean_var: 2d-array defining the mean var per 2d-bin
+        mean_var2: 2d-array defining the mean var2 per 2d-bin
+        chi2: chi^2 between zvar and zvar2
+        If save, plots are saved in out_name as pdf
+        If show, the plots are also shown
     """
     mean_var, mean_var2, mean_val, err_val = ut.get_mean_per_2dbin(var, var2, zvar, numbins = numbins, jk_num = jk_num, error_mode = error_mode)
     mean_var, mean_var2, mean_val2, err_val2 = ut.get_mean_per_2dbin(var, var2, zvar2, numbins = numbins, jk_num = jk_num, error_mode = error_mode)
@@ -162,26 +233,50 @@ def plot_chi2_per_2dbin(var, varname, var2, var2name, zvar, zvar2, titlename, nu
                 plt.savefig(out_name + "_noerr.pdf")
                 print("Plot saved in " + out_name + '_noerr.pdf')
         if show:
-            plt.show()#TODO test using 1d
+            plt.show()
         else:
             plt.close()
 
 def make_all_plots(output_path, fname, xvar, yvar, test_var, est_var, varname, var2name, dowithdisk, dowithoutdisk, xscale, yscale, numbins, params):
     """
-    It makes and/or saves all the 2d test plots.
-    Input:
-    output_path: output path to save files.
-    fname: model name.
-    params: dictionary specifying model and execution parameters.
-    xvar, yvar: variables for x- and y-axes.
-    varname, var2name: names of variables in x- and y-axes.
-    test_var, est_var: test and estimated variables to compare.
-    xscale, yscale: scale of axes, can be 'linear' or 'log'.
-    numbins: list of len(2) defining the 2d number of bins.
-    dowithdisk, dowithoutdisk: booleans specifying whether we make the plots for galaxies with (without) disk only.
-    Return:
-    out_name_test, out_name_est, out_name_chi2: if params['save'] and params['make_plots'], plots are saved in these files.
-    If params['make_plots'] and params['show'], the plots are also shown.
+    This method makes and/or saves all the 2d test plots.
+
+    Parameters:
+    -----------
+    output_path: str
+        Output path to save files
+    fname: str
+        Model name
+    xvar: np.array
+        Variable for x-axis
+    yvar: np.array
+        Variable for y-axis
+    test_var: np.array
+        Test variable to compare
+    est_var: np.array
+        Estimated variable to compare
+    varname: str
+        Names of variable in x-axis
+    var2name: str
+        Names of variable in y-axis
+    dowithdisk: bool
+        It specifies whether it also makes plots for only galaxies with disk
+    dowithoutdisk: bool
+        It specifies whether it also makes plots for only galaxies without disk
+    xscale: str {'linear', 'log'}
+        Scale of x-axis (default is 'linear')
+    yscale: str {'linear', 'log'}
+        Scale of y-axis (default is 'linear')
+    numbins: [int, int]
+        List of len(2) defining the 2d number of bins
+    params: dict
+        Dictionary specifying model and execution parameters
+
+    Returns:
+    --------
+    out_name_test, out_name_est, out_name_chi2: pdf files
+        If params['save'] and params['make_plots'], plots are saved in the files
+        If params['make_plots'] and params['show'], the plots are also shown
     """
 
     out_name_test = output_path + fname + '_' + params['output_data'] +'_vs_' +  varname + '_' + var2name + '_test.pdf'
@@ -232,38 +327,72 @@ def make_all_plots(output_path, fname, xvar, yvar, test_var, est_var, varname, v
 
 def plot_mean_per_bin(xvar, xname, yvar, yname, nbins, filter_arr = None, jk_num = 50, c  = 'k', show = True, marker = 's', ylims = None, leg_loc = 'upper center', equal_bins = True, linestyle = '-', lw = 3, leg_ncol = 1, error_mode = 'jk', save = False, out_name = '/tmp/plot.pdf', get_out = False, rand_xshift = False, median = False, bin_edges = None, close = True):
     """
-    It plots the mean value of a variable as a function of another one.
-    Input:
-    xvar: array, variable that is binned in the x axis.
-    xname: string, name of the variable that appears in x label.
-    yvar: array, variable which mean is calculated in each x bin.
-    yname: string, name of the variable, shown in the legend.
-    nbins: integer, specifies the number of x bins used.
-    filter_array: boolean array which defines a selection of the objects in
-	xvar and yvar.
-    jk_num: integer, number of Jack-Knife subsamples used to calculate the error bars.
-    c: colour of the error bars and points used.
-    show: if True, it shows the plot.
-    marker: marker of plotted points.
-    ylims: None or [a,b], defining (if not None0 the y axes limits.
-    leg_loc: position of legend.
-    equal_bins: if True, each bin has the same number of elements. Otherwise,
-        bins are defined linearly according to the min and max values.
-    linestyle: string, linestyle of the plot.
-    lw: float, line width of the plot.
-    leg_ncol: integer, number of columns in the legend.
-    error_mode: 'jk' or 'std', specifies if the errors are JK or the standard deviation.
-    save: if True, it saves the plots.
-    out_name: name of the output plot file.
-    get_out: if True, it returns the mean xvar, mean yvar and its error.
-    rand_xshift: if True, a small random shift in the x axis is applied on the plot to improve visualization.
-    median: if True, the median instead of the mean is calculated for each bin.
-    bin_edges: if it is a list of values, it is used as the bin edges instead of obtaining them from nbins.
-    close: if True, the plot is closed if it is not shown.
-    Output:
-    It generates a plot that can be saved and/or shown if specified.
-    x_plot: mean x for each bin.
-    y_plot, err_plot: mean y for each bin and its error.
+    This method plots the mean value of a variable as a function of another one.
+
+    Parameters:
+    -----------
+    xvar: np.array
+        Variable that is binned in the x-axis
+    xname: str
+        Name of the variable that appears in x label
+    yvar: np.array
+        Variable which mean is calculated in each x bin
+    yname: str
+        Name of the variable, shown in the legend
+    nbins: int
+        It specifies the number of x bins used
+    filter_array: bool np.array
+        Boolean array which defines a selection of the objects in xvar and yvar
+    jk_num: int
+        Number of Jack-Knife subsamples used to calculate the error bars
+    c: str or list representing colour [R,G,B]
+        Colour of the error bars and points used
+    show: bool
+        If True, it shows the plot (default is True)
+    marker: str
+        Marker of plotted points
+    ylims: None or [float,float]
+        It defines the y-axes limits
+    leg_loc: str or int
+        Position of legend
+    equal_bins: bool
+        If True, each bin has the same number of elements. Otherwise, bins are
+        defined linearly according to the min and max values (default is True)
+    linestyle: str
+        Linestyle of the plot
+    lw: float
+        Line width of the plot
+    leg_ncol: int
+        Number of columns in the legend
+    error_mode: str {'jk', 'std'}
+        If 'jk', JK error is calculated. If 'std', error obtained from standard
+        deviation (default is 'jk')
+    save: bool
+        If True, it saves the plots (default is False)
+    out_name: str
+        Name of the output plot file
+    get_out: bool
+        If True, it returns the mean xvar, mean yvar and its error
+        (default is False)
+    rand_xshift: Bool
+        If True, a small random shift in the x-axis is applied on the plot to
+        improve visualization (default is False)
+    median: bool
+        If True, the median instead of the mean is calculated for each bin
+        (default is False)
+    bin_edges: np.array or list of floats or None
+        If it is a list or array of values, it is used as the bin edges instead
+        of obtaining them from nbins (default is None)
+    close: bool
+        If True, the plot is closed if show is False (default is True)
+
+    Returns:
+    --------
+    An errorbar plot showing:
+        x_plot: mean x for each bin
+        y_plot, err_plot: mean y for each bin and its error
+    If save, the plot is saved in out_name as pdf
+    If show, the plot is shown
     """
     if filter_arr is None:
         filter_arr = np.ones_like(xvar, dtype=bool)

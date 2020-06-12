@@ -1,22 +1,102 @@
 """
-DESCRIPTION
-This script allows to make a regression from a deep neural network.
+DEEP REG
 
+This module defines the methods to make a regression from a deep neural network.
+
+:Author: Arnau Pujol <arnaupv@gmail.com>
+
+:Version: 1.0
 """
 
+
 import numpy as np
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()#It enables to use the behaviour from tensorflow 1
 import scipy.io as sio
 from copy import deepcopy as dp
 
 def leaky_relu(z, name=None):
+  """
+  This method operates a Leaky ReLU on the value z.
+
+  Parameters:
+  -----------
+  z: float
+    Value to which we operate.
+  name: str
+    A name for the operation (optional).
+
+  Returns:
+  --------
+  float
+    Result of Leaky ReLU operation.
+  """
   return tf.maximum(0.01 * z, z, name=name)
 
 def np_leaky_relu(z):
+  """
+  This method is a numpy version of Leaky ReLU.
+
+  Parameters:
+  -----------
+  z: float
+    Value to which we operate.
+
+  Returns:
+  --------
+  float
+    Result of Leaky ReLU operation.
+  """
   return np.maximum(0.01 * z, z)
 
 def deep_reg(dimensions=[784, 512, 256, 64],ct=[0.1,0.1,0.1,0.1], activation = 'leaky_relu'):
+    """
+    This method builds the architecture corresponding to a NN regression.
 
+    Parameters:
+    -----------
+    dimensions: list of ints
+        List of number of neurons per layer.
+    ct: list of floats
+        List of values of the contamination level applied to the NN per layer.
+    activation: str {'leaky_relu', 'relu_tanh', 'leaky_relu_l', 'tanh'}
+        It defines the activation functions applied (default is 'leaky_relu')
+
+            'leaky_relu':
+                Leaky ReLU for all activation functions
+
+            'relu_tanh':
+                tanh on last hidden layer, Leaky ReLU for the rest
+
+            'leaky_relu_l':
+                Linear function on last hidden layer, Leaky ReLU for the rest
+
+            'tanh':
+                tanh for all activation functions
+
+    Returns:
+    --------
+    dict
+        Dictionary with:
+
+            x: np.ndarray
+                Input training data
+
+            theta: np.ndarray
+                Labels for supervised learning
+
+            z: np.ndarray
+                NN output
+
+            W: np.ndarray
+                Weights of NN
+
+            b: np.ndarray
+                Bias
+
+            cost: float
+                Value of cost function
+    """
     L = len(dimensions) -1
 
     # INPUT DATA
@@ -71,6 +151,72 @@ def deep_reg(dimensions=[784, 512, 256, 64],ct=[0.1,0.1,0.1,0.1], activation = '
     return {'x': x,'theta':theta, 'z': z_out,'W':encoder,'b':b_enc,'cost':cost}
 
 def main_reg(Ytrain, Theta, dim = [30, 30, 30], ct = [.1, .1, .1], n_epochs = 100, batch_size=25,starter_learning_rate=1e-4,fname='deep_reg', optim = 'Adam', decay_after = 15, activation = 'leaky_relu', Ytest = None, Ttest = None):
+    """
+    This method is the main function to train the neural network.
+
+    Parameters:
+    -----------
+    Ytrain: np.ndarray
+        Input training data
+    Theta: np.ndarray
+        Label data for supervised learning
+    dim: list of ints
+        List of number of neurons per layer
+    ct: list of floats
+        List of values of the contamination level applied to the NN per layer
+    n_epochs: int
+        Number of epochs applied on the training.
+    batch_size: int
+        Batch size
+    starter_learning_rate: float
+        Initial learning rate.
+    fname: str
+        Name of the model.
+    optim: str {'Adam', 'GD'}
+        Optimizer (default 'Adam')
+    decay_after: int
+        How many epochs to wait until decay learning rate is applied.
+    activation: str {'leaky_relu', 'relu_tanh', 'leaky_relu_l', 'tanh'}
+        It defines the activation functions applied (default is 'leaky_relu')
+
+            'leaky_relu':
+                Leaky ReLU for all activation functions
+
+            'relu_tanh':
+                tanh on last hidden layer, Leaky ReLU for the rest
+
+            'leaky_relu_l':
+                Linear function on last hidden layer, Leaky ReLU for the rest
+
+            'tanh':
+                tanh for all activation functions
+    Ytest: np.ndarray
+        Input data for the test set.
+    Ttest: np.ndarray
+        Label for supervised trianing for the test set.
+
+    Returns:
+    reg: dict
+        Trained model with:
+
+            x: np.ndarray
+                Input training data
+
+            theta: np.ndarray
+                Labels for supervised learning
+
+            z: np.ndarray
+                NN output
+
+            W: np.ndarray
+                Weights of NN
+
+            b: np.ndarray
+                Bias
+
+            cost: float
+                Value of cost function
+    """
 
     n_samples=np.shape(Ytrain)[0]
     n_entries=np.shape(Ytrain)[1]
@@ -103,8 +249,9 @@ def main_reg(Ytrain, Theta, dim = [30, 30, 30], ct = [.1, .1, .1], n_epochs = 10
 
         # Pick one element to optimize for a given task
 
-        if (epoch_i+1) >= decay_after:#TODO test
-            ratio = 1.0 * (n_epochs - (epoch_i+1))  # epoch_n + 1 because learning rate is set for next epoch
+        if (epoch_i+1) >= decay_after:
+            # epoch_n + 1 because learning rate is set for next epoch
+            ratio = 1.0 * (n_epochs - (epoch_i+1))
             ratio = max(0, ratio / (n_epochs - decay_after))
             sess.run(learning_rate.assign(starter_learning_rate * ratio))
         for batch_i in range(n_samples // batch_size):
@@ -141,6 +288,37 @@ def main_reg(Ytrain, Theta, dim = [30, 30, 30], ct = [.1, .1, .1], n_epochs = 10
     return reg
 
 def encode_from_model(data, X, activation = 'leaky_relu'):
+    """
+    This method predicts the output from a model on a given data set.
+
+    Parameters:
+    -----------
+    data: dict
+        Data of ML model containing the weights of the model
+    X: np.ndarray
+        Data set for which we predict the output
+    activation: str {'leaky_relu', 'relu_tanh', 'leaky_relu_l', 'tanh'}
+        It defines the activation functions applied (default is 'leaky_relu')
+
+            'leaky_relu':
+                Leaky ReLU for all activation functions
+
+            'relu_tanh':
+                tanh on last hidden layer, Leaky ReLU for the rest
+
+            'leaky_relu_l':
+                Linear function on last hidden layer, Leaky ReLU for the rest
+
+            'tanh':
+                tanh for all activation functions
+
+    Returns:
+    --------
+    output: np.ndarray
+        Output model preduction from X data.
+    P: list of np.ndarrays
+        List of all outputs per layer
+    """
 
     L = np.int(data['layers'])-1
 
@@ -173,6 +351,63 @@ def encode_from_model(data, X, activation = 'leaky_relu'):
     return output,P
 
 def ParamEstModel(fname='model',Xtrain=0,Xtest=0,Theta_test=0, version = 'deep_reg', activation = 'leaky_relu', top_fs = 0, v = False):
+    """
+    This method makes a parameter estimation of data set from a given model.
+
+    Parameters:
+    -----------
+    fname: str
+        Model name
+    Xtrain: np.ndarray
+        Training data set
+    Xtest: np.ndarray
+        Test set
+    Theta_test: np.ndarray
+        True parameters for test set
+    version: str {'deep_reg', 'deep_reg_est', deep_regl', 'deep_regh', 'deep_regrh'}
+        Version of learning code used (default is 'deep_reg')
+
+            'deep_reg':
+                Regression with Leaky ReLU as activation functions
+
+            'deep_reg_est':
+                Same as deep_reg but Ttrain, Ttest values centred to 1
+
+            'deep_regl':
+                Same as deep_reg_est but linear function on last hidden layer
+                activation functions.
+
+            'deep_regh':
+                Same as deep_reg but tanh as activation functions
+
+            'deep_regrh':
+                Same as deep_reg but tanh on last hidden layer activation
+                functions
+    activation: str {'leaky_relu', 'relu_tanh', 'leaky_relu_l', 'tanh'}
+        It defines the activation functions applied (default is 'leaky_relu')
+
+            'leaky_relu':
+                Leaky ReLU for all activation functions
+
+            'relu_tanh':
+                tanh on last hidden layer, Leaky ReLU for the rest
+
+            'leaky_relu_l':
+                Linear function on last hidden layer, Leaky ReLU for the rest
+
+            'tanh':
+                tanh for all activation functions
+    top_fs: int
+        It specifies how many feature space properties are used for the training,
+        taking the most important ones. 0 if all are taken.
+    v: bool
+        Verbose, some text is shown if True
+
+    Returns:
+    --------
+    Results: np.ndarray
+        Parameter prediction on test set from ML model
+    """
     if top_fs > 0:
         Xtrain = Xtrain[:,:top_fs] # TODO: test
         Xtest = Xtest[:,:top_fs] # TODO: test
