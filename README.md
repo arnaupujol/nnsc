@@ -26,6 +26,8 @@ Then you can simply run:
 $ python setup.py install
 ```
 
+In the text file `requirements.txt` the required packages are specified and
+installed if needed. The versions required here work at least for Python 3.7.0.
 
 Structure of the repository:
 ----------------------------
