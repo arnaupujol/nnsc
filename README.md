@@ -3,10 +3,11 @@
 > Author: **Arnau Pujol**  
 > Year: **2020**  
 > Version: **1.0.0**  
-> Reference Paper: Pujol et al. (2020)
+> Reference Paper: [arXiv:2006.07011](https://arxiv.org/abs/2006.07011)
 
 
-This repository have been built to apply the model Neural Network Shear Correction (NNSC) from Pujol et al. (2020) to model
+
+This repository have been built to apply the model Neural Network Shear Correction (NNSC) from [Pujol et al. (2020)](https://arxiv.org/abs/2006.07011) to model
 shear bias as a function of several measured properties obtained from image simulations.
 
 Software requirements:
@@ -44,7 +45,7 @@ where the arguments after the command define the parameters of the calculations.
 
 - nnsc_data directory: directory where mock data is located. The data is stored with numpy arrays.
 - nnsc directory: contains python modules that are used for the code executable.
-Example: `deep_reg.py` defines functions to generate the DNN for a regression to estimate shear bias as in Pujol et al. (in prep).
+Example: `deep_reg.py` defines functions to generate the DNN for a regression to estimate shear bias as in [Pujol et al. (2020)](https://arxiv.org/abs/2006.07011).
 Example: `param.py` defines all the parameters used in this repository. The variable params is a dictionary with the names of all the parameters that can be used and their respective original values.
 - nnsc_notebooks directory: it contains notebooks showing script examples.
 - nnsc_output: directory where output is stored.
