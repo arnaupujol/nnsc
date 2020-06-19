@@ -6,7 +6,7 @@ the method presented in Pujol et al. (2020).
 
 :Author: Arnau Pujol <arnaupv@gmail.com>
 
-:Version: 1.0.0
+:Version: 1.0.1
 """
 
 import os
@@ -135,16 +135,16 @@ time1 = time()
 draw.walle("bias_ldae.py completed in " + str(round(time1 - time0, 2)) + " seconds")
 
 #Plotting costs
-costs = mdict['costs'][0]
+costs = sio.loadmat(params['temp_dir'] + fname)['costs'][0]
 if params['make_plots']:
     timetext = ut.get_timetext(time1 - time0)
-    costs_v = mdict['costs_v'][0]
+    costs_v = sio.loadmat(params['temp_dir'] + fname)['costs_v'][0]
     plotting.costs(params['n_epochs'], costs, output_path + 'costs_' + fname + '.pdf', save = params['save'], show = params['show'], text = timetext, costs_v = costs_v, yscale = 'log')
 
 if params['save']:
     os.replace(params['temp_dir'] + fname + '.mat', output_path + fname + '.mat')
 else:
-    os.remove(output_path + fname + '.mat')
+    os.remove(params['temp_dir'] + fname + '.mat')
 
 #PLOTTING bias vs properties
 varnames_1d, vars1dwithdisk, vars1dwithoutdisk, varnames, var2names, vars2dowithdisk, vars2dowithoutdisk = ut.get_varnames_to_plot(params['selection'])

@@ -5,7 +5,7 @@ This module defines methods to import data.
 
 :Author: Arnau Pujol <arnaupv@gmail.com>
 
-:Version: 1.0.0
+:Version: 1.0.1
 """
 
 import numpy as np

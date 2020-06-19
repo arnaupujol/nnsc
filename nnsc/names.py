@@ -5,7 +5,7 @@ This module defines the names of the files saves as output.
 
 :Author: Arnau Pujol <arnaupv@gmail.com>
 
-:Version: 1.0.0
+:Version: 1.0.1
 """
 
 def fname(params):

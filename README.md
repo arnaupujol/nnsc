@@ -2,7 +2,7 @@
 
 > Author: **Arnau Pujol**  
 > Year: **2020**  
-> Version: **1.0.0**  
+> Version: **1.0.1**  
 > Reference Paper: [arXiv:2006.07011](https://arxiv.org/abs/2006.07011)
 
 

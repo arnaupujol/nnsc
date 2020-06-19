@@ -5,13 +5,14 @@ This module defines the methods to make a regression from a deep neural network.
 
 :Author: Arnau Pujol <arnaupv@gmail.com>
 
-:Version: 1.0.0
+:Version: 1.0.1
 """
 
 
 import numpy as np
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()#It enables to use the behaviour from tensorflow 1
+import scipy.io as sio
 from copy import deepcopy as dp
 
 def leaky_relu(z, name=None):
@@ -149,7 +150,7 @@ def deep_reg(dimensions=[784, 512, 256, 64],ct=[0.1,0.1,0.1,0.1], activation = '
     cost = tf.reduce_mean(tf.square(output - theta))
     return {'x': x,'theta':theta, 'z': z_out,'W':encoder,'b':b_enc,'cost':cost}
 
-def main_reg(Ytrain, Theta, dim = [30, 30, 30], ct = [.1, .1, .1], n_epochs = 100, batch_size=25,starter_learning_rate=1e-4, optim = 'Adam', decay_after = 15, activation = 'leaky_relu', Ytest = None, Ttest = None):
+def main_reg(Ytrain, Theta, dim = [30, 30, 30], ct = [.1, .1, .1], n_epochs = 100, batch_size=25,starter_learning_rate=1e-4,fname='deep_reg', optim = 'Adam', decay_after = 15, activation = 'leaky_relu', Ytest = None, Ttest = None):
     """
     This method is the main function to train the neural network.
 
@@ -169,6 +170,8 @@ def main_reg(Ytrain, Theta, dim = [30, 30, 30], ct = [.1, .1, .1], n_epochs = 10
         Batch size
     starter_learning_rate: float
         Initial learning rate.
+    fname: str
+        Name of the model.
     optim: str {'Adam', 'GD'}
         Optimizer (default 'Adam')
     decay_after: int
@@ -193,7 +196,7 @@ def main_reg(Ytrain, Theta, dim = [30, 30, 30], ct = [.1, .1, .1], n_epochs = 10
         Label for supervised trianing for the test set.
 
     Returns:
-    mdict: dict
+    reg: dict
         Trained model with:
 
             x: np.ndarray
@@ -280,15 +283,17 @@ def main_reg(Ytrain, Theta, dim = [30, 30, 30], ct = [.1, .1, .1], n_epochs = 10
     if Ytest is not None and Ttest is not None:
         mdict['costs_v'] = costs_v
 
-    return mdict
+    sio.savemat(fname+".mat",mdict)
 
-def encode_from_model(model, X, activation = 'leaky_relu'):
+    return reg
+
+def encode_from_model(data, X, activation = 'leaky_relu'):
     """
     This method predicts the output from a model on a given data set.
 
     Parameters:
     -----------
-    model: dict
+    data: dict
         Data of ML model containing the weights of the model
     X: np.ndarray
         Data set for which we predict the output
@@ -315,15 +320,15 @@ def encode_from_model(model, X, activation = 'leaky_relu'):
         List of all outputs per layer
     """
 
-    L = np.int(model['layers'])-1
+    L = np.int(data['layers'])-1
 
     last_output = dp(X)
-    W = model['W']
-    be = model['b']
+    W = data['W']
+    be = data['b']
 
     all_h = []
     all_h.append(X)
-    
+
     for layer_i in range(1,L+1):
 
         w = W[0,layer_i-1]
@@ -345,14 +350,14 @@ def encode_from_model(model, X, activation = 'leaky_relu'):
 
     return output,P
 
-def ParamEstModel(model,Xtrain=0,Xtest=0,Theta_test=0, version = 'deep_reg', activation = 'leaky_relu', top_fs = 0, v = False):
+def ParamEstModel(fname='model',Xtrain=0,Xtest=0,Theta_test=0, version = 'deep_reg', activation = 'leaky_relu', top_fs = 0, v = False):
     """
     This method makes a parameter estimation of data set from a given model.
 
     Parameters:
     -----------
-    model: dict
-        Data of ML model containing the weights of the model
+    fname: str
+        Model name
     Xtrain: np.ndarray
         Training data set
     Xtest: np.ndarray
@@ -406,9 +411,10 @@ def ParamEstModel(model,Xtrain=0,Xtest=0,Theta_test=0, version = 'deep_reg', act
     if top_fs > 0:
         Xtrain = Xtrain[:,:top_fs] # TODO: test
         Xtest = Xtest[:,:top_fs] # TODO: test
+    f = sio.loadmat(fname)
 
-    z_mu,P = encode_from_model(model,Xtest, activation = activation)
-    z_mut,P = encode_from_model(model,Xtrain, activation = activation)
+    z_mu,P = encode_from_model(f,Xtest, activation = activation)
+    z_mut,P = encode_from_model(f,Xtrain, activation = activation)
     if v:
         print('estimating parameters from deep regressions')
     Results = {}

@@ -5,7 +5,7 @@ This module defines a method to draw initial and final messages of the code.
 
 :Author: Arnau Pujol <arnaupv@gmail.com>
 
-:Version: 1.0.0
+:Version: 1.0.1
 """
 
 def walle(text):
