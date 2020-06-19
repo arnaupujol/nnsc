@@ -36,6 +36,7 @@ params = {
 'top_fs' : 0, #Specifies how many feature space properties are used for the training, taking the most important ones. 0 if all are taken.
 'output_path' : 'nnsc_output/', #Specifies the output path to save the results.
 'input_data' : 'nnsc_data/', #Specifies the directory where the input data is.
+'temp_dir' : '/tmp/', #Specifies a directory for temporary files.
 }
 
 #par_types: dictionary with all the parameter names and their data type.
@@ -66,7 +67,8 @@ par_types = {
 'save' : bool,
 'top_fs' : int,
 'output_path' : str,
-'input_data' : str
+'input_data' : str,
+'temp_dir' : str
 }
 
 def update(params, argv):

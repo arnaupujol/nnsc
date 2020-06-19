@@ -109,24 +109,24 @@ print("Learn the network")
 
 activation = 'leaky_relu'
 if params['version'] == 'deep_reg':#Regression with Leaky ReLU as activation functions
-	aep = deep_reg.main_reg(Xtrain, Ttrain.T, dim = dim, ct = ct, n_epochs = params['n_epochs'], batch_size = params['batch_size'], starter_learning_rate = params['learning_rate'], fname = output_path + fname, decay_after = params['lr_decay'], Ytest = Xtest, Ttest = Ttest.T)
+	reg = deep_reg.main_reg(Xtrain, Ttrain.T, dim = dim, ct = ct, n_epochs = params['n_epochs'], batch_size = params['batch_size'], starter_learning_rate = params['learning_rate'], fname = params['temp_dir'] + fname, decay_after = params['lr_decay'], Ytest = Xtest, Ttest = Ttest.T)
 elif params['version'] == 'deep_reg_est':#Same as deep_reg but Ttrain, Ttest values centred to 1
-	aep = deep_reg.main_reg(Xtrain, Ttrain.T + 1, dim = dim, ct = ct, n_epochs = params['n_epochs'], batch_size = params['batch_size'], starter_learning_rate = params['learning_rate'], fname = output_path + fname, decay_after = params['lr_decay'], Ytest = Xtest, Ttest = Ttest.T + 1)
+	reg = deep_reg.main_reg(Xtrain, Ttrain.T + 1, dim = dim, ct = ct, n_epochs = params['n_epochs'], batch_size = params['batch_size'], starter_learning_rate = params['learning_rate'], fname = params['temp_dir'] + fname, decay_after = params['lr_decay'], Ytest = Xtest, Ttest = Ttest.T + 1)
 elif params['version'] == 'deep_regl':#Same as deep_reg_est but linear function on last hidden layer activation functions.
     activation = 'leaky_relu_l'
-    aep = deep_reg.main_reg(Xtrain, Ttrain.T + 1, dim = dim, ct = ct, n_epochs = params['n_epochs'], batch_size = params['batch_size'], starter_learning_rate = params['learning_rate'], fname = output_path + fname, decay_after = params['lr_decay'], activation = activation, Ytest = Xtest, Ttest = Ttest.T + 1)
+    reg = deep_reg.main_reg(Xtrain, Ttrain.T + 1, dim = dim, ct = ct, n_epochs = params['n_epochs'], batch_size = params['batch_size'], starter_learning_rate = params['learning_rate'], fname = params['temp_dir'] + fname, decay_after = params['lr_decay'], activation = activation, Ytest = Xtest, Ttest = Ttest.T + 1)
 elif params['version'] == 'deep_regh':#Same as deep_reg but tanh as activation functions
     activation = 'tanh'
-    aep = deep_reg.main_reg(Xtrain, Ttrain.T, dim = dim, ct = ct, n_epochs = params['n_epochs'], batch_size = params['batch_size'], starter_learning_rate = params['learning_rate'], fname = output_path + fname, decay_after = params['lr_decay'], activation = activation, Ytest = Xtest, Ttest = Ttest.T)
+    reg = deep_reg.main_reg(Xtrain, Ttrain.T, dim = dim, ct = ct, n_epochs = params['n_epochs'], batch_size = params['batch_size'], starter_learning_rate = params['learning_rate'], fname = params['temp_dir'] + fname, decay_after = params['lr_decay'], activation = activation, Ytest = Xtest, Ttest = Ttest.T)
 elif params['version'] == 'deep_regrh':#Same as deep_reg but tanh on last hidden layer activation functions
     activation = 'relu_tanh'
-    aep = deep_reg.main_reg(Xtrain, Ttrain.T, dim = dim, ct = ct, n_epochs = params['n_epochs'], batch_size = params['batch_size'], starter_learning_rate = params['learning_rate'], fname = output_path + fname, decay_after = params['lr_decay'], activation = activation, Ytest = Xtest, Ttest = Ttest.T)
+    reg = deep_reg.main_reg(Xtrain, Ttrain.T, dim = dim, ct = ct, n_epochs = params['n_epochs'], batch_size = params['batch_size'], starter_learning_rate = params['learning_rate'], fname = params['temp_dir'] + fname, decay_after = params['lr_decay'], activation = activation, Ytest = Xtest, Ttest = Ttest.T)
 else:
 	print("ERROR: wrong assignment of params[version]: " + params['version'])
 
 #Generate estimated bias for test set
 print("Validate the estimation procedure")
-R0 = deep_reg.ParamEstModel(fname=output_path + fname,Xtrain=Xtrain,Xtest=Xtest,Theta_test=Ttest.T, version = params['version'], activation = activation)
+R0 = deep_reg.ParamEstModel(fname=params['temp_dir'] + fname,Xtrain=Xtrain,Xtest=Xtest,Theta_test=Ttest.T, version = params['version'], activation = activation)
 Pest = R0["Pest"]
 Ptest = Ttest.T
 E = Pest - Ptest
@@ -141,11 +141,13 @@ if params['make_plots']:
     costs_v = sio.loadmat(output_path + fname)['costs_v'][0]
     plotting.costs(params['n_epochs'], costs, output_path + 'costs_' + fname + '.pdf', save = params['save'], show = params['show'], text = timetext, costs_v = costs_v, yscale = 'log')
 
+if params['save']:
+    os.replace(params['temp_dir'] + fname + '.mat', output_path + fname + '.mat')
+else:
+    os.remove(output_path + fname + '.mat')
+
 #PLOTTING bias vs properties
 varnames_1d, vars1dwithdisk, vars1dwithoutdisk, varnames, var2names, vars2dowithdisk, vars2dowithoutdisk = ut.get_varnames_to_plot(params['selection'])
-
-if not params['save']:
-    os.remove(output_path + fname + '.mat')
 
 #Plotting 1d dependencies
 for i in range(len(varnames_1d)):
